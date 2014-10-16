@@ -49,6 +49,7 @@ end
 
 service "restart #{node.rabbitmq.service_name}" do
   service_name node.rabbitmq.service_name
+  provider Chef::Provider::Service::Upstart
   action :nothing
   subscribes :restart, resources("template[#{node.rabbitmq.config_root}/rabbitmq.config]"), :immediately
 end

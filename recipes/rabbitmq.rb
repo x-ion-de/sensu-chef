@@ -30,7 +30,12 @@ if node.sensu.use_ssl
     recursive true
   end
 
-  ssl = Sensu::Helpers.data_bag_item("ssl")
+  #if node.sensu.use_vault
+  #  ssl = ChefVault::Item.load('sensu', 'ssl')
+  #else
+  #  ssl = Sensu::Helpers.data_bag_item('ssl')
+  #end
+  ssl = ChefVault::Item.load('sensu', 'ssl')
 
   %w[
     cacert

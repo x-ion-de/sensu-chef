@@ -32,22 +32,18 @@ module Sensu
         end
       end
 
-      def data_bag_item(item, missing_ok=false, use_vault=false)
-        if use_vault
-          ChefVault::Item.load("sensu", item)
+      def data_bag_item(item, missing_ok=false)
+        raw_hash = Chef::DataBagItem.load("sensu", item)
+        encrypted = raw_hash.detect do |key, value|
+          if value.is_a?(Hash)
+            value.has_key?("encrypted_data")
+          end
+        end
+        if encrypted
+          secret = Chef::EncryptedDataBagItem.load_secret
+          Chef::EncryptedDataBagItem.new(raw_hash, secret)
         else
-          raw_hash = Chef::DataBagItem.load("sensu", item)
-          encrypted = raw_hash.detect do |key, value|
-            if value.is_a?(Hash)
-              value.has_key?("encrypted_data")
-            end
-          end
-          if encrypted
-            secret = Chef::EncryptedDataBagItem.load_secret
-            Chef::EncryptedDataBagItem.new(raw_hash, secret)
-          else
-            raw_hash
-          end
+          raw_hash
         end
       rescue Chef::Exceptions::ValidationFailed,
         Chef::Exceptions::InvalidDataBagPath,

@@ -30,7 +30,12 @@ if node.sensu.use_ssl
     recursive true
   end
 
-  ssl = Sensu::Helpers.data_bag_item("ssl")
+  #if node.sensu.use_vault
+  #  ssl = ChefVault::Item.load('sensu', 'ssl')
+  #else
+  #  ssl = Sensu::Helpers.data_bag_item('ssl')
+  #end
+  ssl = ChefVault::Item.load('sensu', 'ssl')
 
   %w[
     cacert
@@ -49,6 +54,7 @@ end
 
 service "restart #{node.rabbitmq.service_name}" do
   service_name node.rabbitmq.service_name
+  provider Chef::Provider::Service::Upstart
   action :nothing
   subscribes :restart, resources("template[#{node.rabbitmq.config_root}/rabbitmq.config]"), :immediately
 end

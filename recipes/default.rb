@@ -62,7 +62,12 @@ if node.sensu.use_ssl
     mode 0750
   end
 
-  ssl = Sensu::Helpers.data_bag_item("ssl")
+  #if node.sensu.use_vault
+  #  ssl = ChefVault::Item.load('sensu', 'ssl')
+  #else
+  #  ssl = Sensu::Helpers.data_bag_item('ssl')
+  #end
+  ssl = ChefVault::Item.load('sensu', 'ssl')
 
   file node.sensu.rabbitmq.ssl.cert_chain_file do
     content ssl["client"]["cert"]

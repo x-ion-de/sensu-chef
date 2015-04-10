@@ -2,7 +2,7 @@
 # Cookbook Name:: sensu
 # Recipe:: _windows
 #
-# Copyright 2012, Sonian Inc.
+# Copyright 2014, Sonian Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 Chef::Recipe.send(:include, Windows::Helper)
 
 user "sensu" do
-  password Sensu::Helpers.random_password
+  password Sensu::Helpers.random_password(20, true, true, true, true)
   not_if {
     user = Chef::Util::Windows::NetUser.new("sensu")
     !!user.get_info rescue false
@@ -58,8 +58,6 @@ end
 execute "sensu-client.exe install" do
   cwd 'C:\opt\sensu\bin'
   not_if {
-    ::Win32::Service.services.detect do |service|
-      service.service_name == "sensu-client"
-    end
+    ::Win32::Service.exists?("sensu-client")
   }
 end

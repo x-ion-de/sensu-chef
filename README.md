@@ -88,6 +88,10 @@ community RabbitMQ cookbook LWRP's.
 Installs and configures Redis for Sensu. This recipe uses the
 RedisIO cookbook and installs Redis from source.
 
+### sensu::enterprise
+
+Installs and configures Sensu Enterprise.
+
 ### sensu::server_service
 
 Enables and starts the Sensu server.
@@ -99,6 +103,10 @@ Enables and starts the Sensu client.
 ### sensu::api_service
 
 Enables and starts the Sensu API.
+
+### sensu::enterprise_service
+
+Enables and starts Sensu Enterprise.
 
 ## ATTRIBUTES
 
@@ -117,8 +125,14 @@ Enables and starts the Sensu API.
 
 `node.sensu.use_ssl` - If Sensu and RabbitMQ are to use SSL.
 
+`node.sensu.user` - The user who owns all sensu files and directories. Default
+"sensu".
+
+`node.sensu.group` - The group that owns all sensu files and directories.
+Default "sensu".
+
 `node.sensu.use_embedded_ruby` - If Sensu Ruby handlers and plugins
-use the embedded Ruby in the Sensu package.
+use the embedded Ruby in the Sensu package (default: false).
 
 `node.sensu.init_style` - Style of init to be used when configuring
 Sensu services, "sysv" and "runit" are currently supported.

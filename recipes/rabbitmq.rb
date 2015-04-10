@@ -67,9 +67,10 @@ end
 
 # The packaged erlang in 12.04 (and below) is vulnerable to
 # the poodle exploit which stops rabbitmq starting its SSL listener
-if node.platform == "ubuntu" && node.platform_version <= "12.04"
-  node.override.erlang.install_method = "esl"
-end
+# Note(JR): doesn't work for us, discard for now
+#if node.platform == "ubuntu" && node.platform_version <= "12.04"
+#  node.override.erlang.install_method = "esl"
+#end
 
 include_recipe "rabbitmq"
 include_recipe "rabbitmq::mgmt_console"

@@ -1,3 +1,7 @@
+# user
+default.sensu.user = "sensu"
+default.sensu.group = "sensu"
+
 # platform
 if platform_family?("windows")
   default.sensu.admin_user = "Administrator"
@@ -12,18 +16,22 @@ else
 end
 
 # installation
-default.sensu.version = "0.14.0-1"
+default.sensu.version = "0.17.1-1"
 default.sensu.use_unstable_repo = false
 default.sensu.log_level = "info"
 default.sensu.use_ssl = true
 default.sensu.use_embedded_ruby = false
 default.sensu.init_style = "sysv"
 default.sensu.service_max_wait = 10
-default.sensu.use_vault = false
+default.sensu.directory_mode = "0750"
+default.sensu.log_directory_mode = "0750"
 
 default.sensu.apt_repo_url = "http://repos.sensuapp.org/apt"
 default.sensu.yum_repo_url = "http://repos.sensuapp.org"
 default.sensu.msi_repo_url = "http://repos.sensuapp.org/msi"
+
+# transport
+default.sensu.transport.reconnect_on_error = true
 
 # rabbitmq
 default.sensu.rabbitmq.host = "localhost"
@@ -35,8 +43,15 @@ default.sensu.rabbitmq.password = "password"
 # redis
 default.sensu.redis.host = "localhost"
 default.sensu.redis.port = 6379
+default.sensu.redis.reconnect_on_error = true
 
 # api
 default.sensu.api.host = "localhost"
 default.sensu.api.bind = "0.0.0.0"
 default.sensu.api.port = 4567
+
+# data bag
+default.sensu.data_bag.name = "sensu"
+default.sensu.data_bag.ssl_item = "ssl"
+default.sensu.data_bag.config_item = "config"
+default.sensu.data_bag.enterprise_item = "enterprise"

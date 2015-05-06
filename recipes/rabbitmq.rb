@@ -75,9 +75,20 @@ end
 include_recipe "rabbitmq"
 include_recipe "rabbitmq::mgmt_console"
 
+# Note(JR): Chef should really just allow to attach the subscription to an existing
+# service resource. Or maybe the should use chef-rewind?
+
+case node.rabbitmq.job_control
+when 'upstart'
+  provider = Chef::Provider::Service::Upstart
+when 'initd'
+  provider = Chef::Provider::Service::Init
+else
+  Chef::Log.error('Unknown job_control setting for rabbitmq')
+
 service "restart #{node.rabbitmq.service_name}" do
   service_name node.rabbitmq.service_name
-  provider Chef::Provider::Service::Upstart
+  provider provider
   action :nothing
   subscribes :restart, resources("template[#{node.rabbitmq.config_root}/rabbitmq.config]"), :immediately
 end

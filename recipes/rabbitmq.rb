@@ -85,6 +85,7 @@ when 'initd'
   provider = Chef::Provider::Service::Init
 else
   Chef::Log.error('Unknown job_control setting for rabbitmq')
+end
 
 service "restart #{node.rabbitmq.service_name}" do
   service_name node.rabbitmq.service_name

@@ -43,6 +43,15 @@ when "debian"
     options package_options
     notifies :create, "ruby_block[sensu_service_trigger]"
   end
+
+  # Note(JR): Override the broken init.d file with our patched version
+  # See https://github.com/sensu/sensu/issues/730
+  cookbook_file '/etc/init.d/sensu-service' do
+    source 'sensu-service'
+    owner 'root'
+    group 'root'
+    mode '0755'
+  end
 when "rhel", "fedora"
   repo = yum_repository "sensu" do
     description "sensu monitoring"

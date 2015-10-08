@@ -22,7 +22,7 @@ depends "rabbitmq", ">= 2.0.0"
 depends "redisio", ">= 1.7.0"
 
 # available @ https://supermarket.chef.io/cookbooks/chef-vault
-depends "chef-vault", ">= 1.2.0"
+depends "chef-vault", ">= 1.3.1"
 # suggests "chef-vault", ">= 1.2.0"
 
 %w[
